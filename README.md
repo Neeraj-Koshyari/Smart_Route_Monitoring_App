@@ -117,8 +117,6 @@ Manual testing across:
 - Manual Mode → Custom checkpoints with expected time
 - Settings → Contact management via AsyncStorage
 
-See `/docs/Testing_Report.pdf` for details (optional).
-
 ---
 
 ## ⚠️ Known Issues
@@ -146,7 +144,7 @@ This project is part of a final year engineering submission. Source code is open
 
 ## 👨‍🎓 Author
 
-Developed by Navraj Devali and Neeraj Koshyari 
-Final Year B.Tech – Graphic Era Hill University, Bhimtal  
+Developed by Navraj Devali and Neeraj Koshyari<br> 
+Final Year B.Tech – Graphic Era Hill University, Bhimtal<br>
 Project Title: **Smart Route Monitoring and Alert System**  
 Submission: June 2025
