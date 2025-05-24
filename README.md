@@ -1,163 +1,152 @@
-# 🚨 Road Safety App – React Native with Google Maps
 
-A smart road safety application built using **React Native** and **Google Maps** that tracks your journey through checkpoints and sends SOS alerts if you miss a checkpoint in time. The app supports two modes:
+# Smart Route Monitoring 🚦📍
 
-- **Automatic Mode**: Auto-calculates the optimal path to your destination and generates timed checkpoints.
-- **Manual Mode**: Lets you tap on the map to place custom checkpoints along the chosen route.
+A React Native-based mobile application that enhances **travel safety** by monitoring a user’s journey using **time-bound checkpoints** and **automatic SOS alerts**. Supports both **Automatic** and **Manual** navigation modes, integrated with Google Maps, Directions API, and native Android SMS services.
 
 ---
 
-## 🗺️ Key Features
+## 📌 Features
 
-- **Google Maps Integration**  
-- **Automatic Mode**  
-  - Enter destination → optimal route generated → automatic checkpoints with ETA  
-  - SOS popup if you fail to reach a checkpoint in time  
-- **Manual Mode**  
-  - Enter destination → route displayed → tap to add custom checkpoints  
-  - SOS alert for missed checkpoint timing  
-- **Real-Time Location Tracking**  
-- **Smooth Zoom & Centering**  
-- **Google Places Autocomplete** for destination search  
-- **Automatic SMS** in emergencies (Android only)  
-- **AsyncStorage** for user settings (e.g., saved phone number)
+- **Dual Navigation Modes:**
+  - **Automatic Mode:** Auto-generates checkpoints based on route geometry.
+  - **Manual Mode:** Allows users to set their own checkpoints by tapping on the route.
+  
+- **Checkpoint-Based Monitoring:**
+  - Each checkpoint is assigned an expected arrival time.
+  - If the user fails to reach a checkpoint on time, an SOS modal is triggered.
+
+- **Emergency SOS System:**
+  - If user doesn’t confirm safety, the app sends an SMS to configured emergency contacts with live location.
+
+- **Settings Management:**
+  - Add/Delete SOS contacts
+  - Contacts are stored using `AsyncStorage` for offline access
+
+- **Offline-Safe:** SOS can be triggered without internet using native Android SMS integration.
 
 ---
 
-## 🛠️ Installation & Setup
+## 🛠 Installation & Setup
 
-### 1. Initialize Project
+### 1. Clone the Repository
 
-```
-npx react-native init MyMapApp
-cd MyMapApp
+```bash
+git clone https://github.com/your-username/smart-route-monitoring.git
+cd smart-route-monitoring
 ```
 
 ### 2. Install Dependencies
 
-```
-# Core mapping & location
-npm install react-native-maps
-npm install react-native-maps-directions
-npm install react-native-google-places-autocomplete
-npm install react-native-get-location
-npm install react-native-get-random-values
-npm install uuid
-
-# UI dropdowns
-npm install react-native-element-dropdown
-npm install react-native-dropdown-picker
-
-# Navigation
-npm install @react-navigation/native
-npm install @react-navigation/native-stack
-npm install react-native-screens
-npm install react-native-safe-area-context
-npm install react-native-gesture-handler
-npm install react-native-reanimated
-
-# Async Storage
-npm install @react-native-async-storage/async-storage
+```bash
+npm install
 ```
 
-### 3. Platform-Specific Configuration
-
-#### Android
-
-1. **Permissions & API Key**  
-   Edit `android/app/src/main/AndroidManifest.xml`:
-
-   ```
-   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-   <uses-permission android:name="android.permission.SEND_SMS" />
-
-   <application>
-     <!-- Google Maps API Key -->
-     <meta-data
-       android:name="com.google.android.geo.API_KEY"
-       android:value="YOUR_GOOGLE_MAPS_API_KEY" />
-   </application>
-   ```
-
-2. **Native Module for Automatic SMS**  
-   - **SmsModule.java**: implements SMS via `SmsManager`  
-   - **SmsPackage.java**: registers the module  
-   - Register your package in `MainApplication.kt`  
-
-#### iOS
+### 3. Link Native Modules
 
 ```bash
-cd ios
-pod install
-cd ..
+npx pod-install
 ```
 
-Add to `Info.plist`:
+### 4. Add Google API Key
 
+In `android/app/src/main/AndroidManifest.xml`, add:
+
+```xml
+<meta-data
+  android:name="com.google.android.geo.API_KEY"
+  android:value="YOUR_GOOGLE_MAPS_API_KEY"/>
 ```
-<key>NSLocationWhenInUseUsageDescription</key>
-<string>Your app requires access to your location.</string>
-<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-<string>Your app requires access to your location.</string>
+
+For `.env` based usage:
+
+```env
+GOOGLE_MAPS_API_KEY=your_key_here
 ```
 
 ---
 
-## 🔧 Common Issues & Fixes
+## 📱 Required Permissions
 
-1. **`crypto.getRandomValues()` Error**  
-   ```js
-   // At top of your entry file (e.g., App.js)
-   import 'react-native-get-random-values';
-   ```
+**Android:**
+```xml
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.SEND_SMS" />
+```
 
-2. **CMake Build Error**  
-   ```bash
-   cd android
-   ./gradlew clean
-   rm -rf app/.cxx app/build
-   ./gradlew assembleDebug
-   ```
+**iOS:**
+> Not fully supported — Native SMS dispatch not implemented.
 
-3. **Infinite SOS Loop**  
-   - Stop simulation when SOS popup appears to prevent repeated checks.
+---
 
-4. **Checkpoint Persistence**  
-   - Use a state flag to initialize checkpoints only once per route.
+## 🧩 Native Module Setup
 
-5. **App Data Reset on Background**  
-   - Persist necessary state in AsyncStorage; rehydrate on app launch.
+**Location:** `android/app/src/main/java/com/routing/`
+
+- `SmsModule.java` → Native Android module to send SMS.
+- `SmsPackage.java` → Register module with React Native.
+- Register in `MainApplication.kt`.
+
+---
+
+## 🚀 Run the App
+
+### Android Emulator / Device
+```bash
+npx react-native run-android
+```
 
 ---
 
 ## 📂 Project Structure
 
-```
-MyMapApp/
-├── android/
-├── ios/
-├── src/
-│   ├── screens/
-│   │   ├── Home/
-│   │   ├── Automatic/
-│   │   └── Manual/
-│   ├── components/
-│   └── utils/
-├── App.js
-└── README.md
+```plaintext
+src/
+├── Screens/           # Home, Automatic, Manual, Settings
+├── module/            # PathSimulator, SosModule
+├── context/           # SosContext, LocationContext
+├── permissions/       # Permission checks
+├── navigation/        # Stack Navigation config
 ```
 
 ---
 
-## 🔗 Useful Resources
+## 🧪 Testing
 
-- **Android Studio Setup**: https://youtu.be/8l691BQ-RGc?si=TRlFOUT-kgUX80dc  
-- **Google Maps Tutorial Playlist**: https://www.youtube.com/playlist?list=PLeIJUF3PiXDfOoCWgD4uibjkGQMT7a78v  
-- **React Native Maps**: https://github.com/react-native-maps/react-native-maps  
-- **React Native Maps Directions**: https://github.com/bramus/react-native-maps-directions  
-- **Google Places Autocomplete**: https://www.npmjs.com/package/react-native-google-places-autocomplete  
+Manual testing across:
+- Automatic Mode → Checkpoint timeout → SOS triggered
+- Manual Mode → Custom checkpoints with expected time
+- Settings → Contact management via AsyncStorage
+
+See `/docs/Testing_Report.pdf` for details (optional).
 
 ---
 
-*Developed by Navraj Devali and Neeraj Koshyari*
+## ⚠️ Known Issues
+
+- Simulator state not persisted after app restart
+- iOS version lacks native SMS fallback
+- Location permission conflicts on fast screen switching (under review)
+
+---
+
+## 🧠 Future Enhancements
+
+- iOS Push Notification fallback
+- Real GPS tracking mode (not just simulation)
+- Firebase backend for contact sync
+- Voice-based SOS activation
+
+---
+
+## 📜 License
+
+This project is part of a final year engineering submission. Source code is open for learning purposes. Commercial use is not permitted without permission.
+
+---
+
+## 👨‍🎓 Author
+
+Developed by Navraj Devali and Neeraj Koshyari 
+Final Year B.Tech – Graphic Era Hill University, Bhimtal  
+Project Title: **Smart Route Monitoring and Alert System**  
+Submission: June 2025
