@@ -1,199 +1,176 @@
-****Code Motive*****
-Create an app using react native for road safety in this their will be google map in which their will be 2 windows automatic and manual.
-In automatic the user will enter its destination location and the current location will be source location. so when the user will enter the destination then the most optimal path will be generated from the source to destination and  checkpoints will be generated in the path automatically and in those checkpoint a time will be given means when user start moving to the destination then the user should reach that checkpoint at that time if he does not reach that checkpoint at that time then an SOS pop up will displayed which will confirm whether the user is safe or not.
+# 🚨 Road Safety App – React Native with Google Maps
 
-and in manual when the user enter destination location then the best route will be selected and then the user will click on the root  and checkpoint will be placed where the user click. after creation of checkpoint in those checkpoint a time will be given means when user start moving to the destination then the user should reach that checkpoint at that time if he does not reach that checkpoint at that time then an SOS pop up will displayed which will confirm whether the user is safe or not.
+A smart road safety application built using **React Native** and **Google Maps** that tracks your journey through checkpoints and sends SOS alerts if you miss a checkpoint in time. The app supports two modes:
 
+- **Automatic Mode**: Auto-calculates the optimal path to your destination and generates timed checkpoints.
+- **Manual Mode**: Lets you tap on the map to place custom checkpoints along the chosen route.
 
-Make react native project
-    -> npx react-native init MyMapApp
-    -> npm install @react-native-community/cli
+---
 
+## 🗺️ Key Features
 
-Setup for react-native and android studio:
-Youtube: https://youtu.be/8l691BQ-RGc?si=TRlFOUT-kgUX80dc
+- **Google Maps Integration**  
+- **Automatic Mode**  
+  - Enter destination → optimal route generated → automatic checkpoints with ETA  
+  - SOS popup if you fail to reach a checkpoint in time  
+- **Manual Mode**  
+  - Enter destination → route displayed → tap to add custom checkpoints  
+  - SOS alert for missed checkpoint timing  
+- **Real-Time Location Tracking**  
+- **Smooth Zoom & Centering**  
+- **Google Places Autocomplete** for destination search  
+- **Automatic SMS** in emergencies (Android only)  
+- **AsyncStorage** for user settings (e.g., saved phone number)
 
+---
 
-All about google maps : 
-Youtube: https://www.youtube.com/playlist?list=PLeIJUF3PiXDfOoCWgD4uibjkGQMT7a78v
+## 🛠️ Installation & Setup
 
+### 1. Initialize Project
 
-Map API's
-    github: https://github.com/react-native-maps/react-native-maps
+\`\`\`bash
+npx react-native init MyMapApp
+cd MyMapApp
+\`\`\`
 
+### 2. Install Dependencies
 
-1. Installation Commands for API:
-   Install React Native Maps:           npm install react-native-maps
-   Install MapView Directions:          npm install react-native-maps-directions
-   Install Google Places Autocomplete:  npm install react-native-google-places-autocomplete
-   Install GetLocation for Geolocation: npm install react-native-get-location
-   Install Get Random Values (Polyfill):npm install react-native-get-random-values
+\`\`\`bash
+# Core mapping & location
+npm install react-native-maps
+npm install react-native-maps-directions
+npm install react-native-google-places-autocomplete
+npm install react-native-get-location
+npm install react-native-get-random-values
+npm install uuid
 
-   //For drop down box
-   Install element DropDown:            npm install react-native-element-dropdown
-   Install dropdown Picker:             npm install react-native-dropdown-picker
+# UI dropdowns
+npm install react-native-element-dropdown
+npm install react-native-dropdown-picker
 
-   //For navigation between the Screens
-   npm install @react-navigation/native 
-   npm install @react-navigation/native-stack 
-   npm install react-native-screens 
-   npm install react-native-safe-area-context 
-   npm install react-native-gesture-handler 
-   npm install react-native-reanimated 
-   npm install react-native-get-random-values
+# Navigation
+npm install @react-navigation/native
+npm install @react-navigation/native-stack
+npm install react-native-screens
+npm install react-native-safe-area-context
+npm install react-native-gesture-handler
+npm install react-native-reanimated
 
+# Async Storage
+npm install @react-native-async-storage/async-storage
+\`\`\`
 
-2. Additional Setup
-    Android-Specific Setup:
-        Add the required Google Maps API key for both Places and Directions in the android/app/src/main/AndroidManifest.xml file:
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR_GOOGLE_MAPS_API_KEY" 
-        />
-    iOS-Specific Setup:
-        If you're running this code on iOS, you need to install CocoaPods dependencies.
-        cd ios
-        pod install
-        cd ..
+### 3. Platform-Specific Configuration
 
-3. Permissions Needed
-    Android:
-        Add the following permissions in android/app/src/main/AndroidManifest.xml:
-        <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-        <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-        <uses-permission android:name="android.permission.SEND_SMS" />
-    
-    iOS:
-        Add these entries in your Info.plist file:
-        <key>NSLocationWhenInUseUsageDescription</key>
-        <string>Your app requires access to your location.</string>
-        <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-        <string>Your app requires access to your location.</string>
-        // SMS permission not implemented yet
+#### Android
 
+1. **Permissions & API Key**  
+   Edit \`android/app/src/main/AndroidManifest.xml\`:
 
-API requires:
-    -> Use Map
-        website: https://www.npmjs.com/package/react-native-maps
-        Youtube: https://www.youtube.com/watch?v=jgi_I7nk3kE&list=PLeIJUF3PiXDfOoCWgD4uibjkGQMT7a78v&index=1
+   \`\`\`xml
+   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+   <uses-permission android:name="android.permission.SEND_SMS" />
 
-    -> For marker
-        github: https://github.com/react-native-maps/react-native-maps?tab=readme-ov-file#rendering-a-list-of-markers-on-a-map
-        Youtube: https://www.youtube.com/watch?v=-TlpJyB4CyI&list=PLeIJUF3PiXDfOoCWgD4uibjkGQMT7a78v&index=2
+   <application>
+     <!-- Google Maps API Key -->
+     <meta-data
+       android:name="com.google.android.geo.API_KEY"
+       android:value="YOUR_GOOGLE_MAPS_API_KEY" />
+   </application>
+   \`\`\`
 
-    -> For Search Bar
-        website: https://www.npmjs.com/package/react-native-google-places-autocomplete
-        Youtube: https://www.youtube.com/watch?v=-ilENWc2kNA&list=PLeIJUF3PiXDfOoCWgD4uibjkGQMT7a78v&index=5
+2. **Native Module for Automatic SMS**  
+   - **SmsModule.java**: implements SMS via \`SmsManager\`  
+   - **SmsPackage.java**: registers the module  
+   - Register your package in \`MainApplication.kt\`  
 
-    -> For current location
-        website: https://www.npmjs.com/package/react-native-get-location
-        Youtube: https://www.youtube.com/watch?v=UOAr5iUO4l0&list=PLeIJUF3PiXDfOoCWgD4uibjkGQMT7a78v&index=8
+#### iOS
 
+\`\`\`bash
+cd ios
+pod install
+cd ..
+\`\`\`
 
-Zoom Feature
+Add to \`Info.plist\`:
 
-    1. Focus on the Visible Center of the Screen:
-        The getCamera method retrieves the current camera position and zoom level, ensuring any changes apply to the screen's center.
+\`\`\`xml
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>Your app requires access to your location.</string>
+<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+<string>Your app requires access to your location.</string>
+\`\`\`
 
-    2. Zoom Levels:
-        The zoom property is adjusted by incrementing or decrementing it for zoom-in and zoom-out actions, respectively.
-        
-        Limits:
-            -> Zoom-in max: 20 (very close to the ground).
-            -> Zoom-out min: 2 (shows a wider area).
-        
-    3. Smooth Transitions:
-        animateCamera creates a smooth zoom effect with the specified duration.
+---
 
+## 🔧 Common Issues & Fixes
 
-Errors while building:
-1. Render Error (resolved)
-    crypto.getRandomValues() not supported
-    
-    -> The error message comes due to the fact that crypto.getRandomValues() isn't natively supported in React Native. The GooglePlacesAutocomplete component internally uses the uuid package, which depends on crypto.getRandomValues().
+1. **\`crypto.getRandomValues()\` Error**  
+   \`\`\`js
+   // At top of your entry file (e.g., App.js)
+   import 'react-native-get-random-values';
+   \`\`\`
 
-    Solution: 
-    -> To fix this, Explicitly add 'react-native-get-random-values' to your project and ensure it loads at the very beginning.
-    1.  Install the Required Packages:
-        -> npm install react-native-get-random-values
-        -> npm install uuid
+2. **CMake Build Error**  
+   \`\`\`bash
+   cd android
+   ./gradlew clean
+   rm -rf app/.cxx app/build
+   ./gradlew assembleDebug
+   \`\`\`
 
-    2.  Import 'react-native-get-random-values' at the Top of Your Main File
-        -> import 'react-native-get-random-values';
+3. **Infinite SOS Loop**  
+   - Stop simulation when SOS popup appears to prevent repeated checks.
 
-2. Current Location request get denied when moving from automatic to manual screen or vice-versa because of non     centrallized location request (Not-resolved)
+4. **Checkpoint Persistence**  
+   - Use a state flag to initialize checkpoints only once per route.
 
-3. Removal of all data when app cleared from background or move back to home screen (Not-resolved)
+5. **App Data Reset on Background**  
+   - Persist necessary state in AsyncStorage; rehydrate on app launch.
 
-4. 'CMakeFiles/rules.ninja': No such file or directory
-                 include CMakeFiles/rules.ninja
-    
-    Solution: 
-    1. Clear Build Cache
-            cd android
-            ./gradlew clean
+---
 
-        Also delete the .cxx and build folders manually to fully clean native build artifacts:
-        rm -rf app/.cxx app/build
+## 📂 Project Structure
 
-    2. Rebuild the Project
-        cd android
-        ./gradlew assembleDebug
+\`\`\`
+MyMapApp/
+├── android/
+├── ios/
+├── src/
+│   ├── screens/
+│   │   ├── Home/
+│   │   ├── Automatic/
+│   │   └── Manual/
+│   ├── components/
+│   └── utils/
+├── App.js
+└── README.md
+\`\`\`
 
-(Created on 23 APR 2025)
-5.  Error: infinite pop-up for 'checkpoint miss' and 'sos call' 
-    Error reason: calling the pip-up and sos call again and again because of regular check for
-        next checkpoint expected Time.
-    Solution: Stop the Simulation insted of continuation of simulation in background until "no"
-    pressed on sosModule.
+---
 
+## 🔗 Useful Resources
 
-(Created on 27 APR 2025)
-6.  Error: No Consideration of Checkpoint after stoping and again starting
-    Error reason: creating new object insted of using previous object.
-    Solution: Create the object only once.
+- **Android Studio Setup**: https://youtu.be/8l691BQ-RGc?si=TRlFOUT-kgUX80dc  
+- **Google Maps Tutorial Playlist**: https://www.youtube.com/playlist?list=PLeIJUF3PiXDfOoCWgD4uibjkGQMT7a78v  
+- **React Native Maps**: https://github.com/react-native-maps/react-native-maps  
+- **React Native Maps Directions**: https://github.com/bramus/react-native-maps-directions  
+- **Google Places Autocomplete**: https://www.npmjs.com/package/react-native-google-places-autocomplete  
 
-7.  Error: Non Increment of Timer after stopSimulation button pressed and
-        started Simulation again.
-    Error reason: if paused and pressed stopSimulation button the isPaused state remain 'true'
-    Solution: after pressing startSimulator button check for isPaused state if true make is 
-        false.
+---
 
-8.  Error: TypeError: Cannot read property 'stopSimulation' of null
-    Solution: Adding defensive checks before calling stopSimulation or other methods on
-        simulator.
+## 🤝 Contributing
 
+Contributions, issues, and feature requests are welcome!  
+Feel free to open issues or submit pull requests.
 
-(Created on 29 APR 2025)
-9.  Error: Updation of cordinates after pressing startSimulator in AutomaticScreen
-    Error Cause: onReady callback in MapViewDirections component. This callback is being triggered every time the map re-renders (after moving from source to destination map re-render the updated current locaion).
-    Solution: use of state variable which check whether already initialized checkpoints or not.
+---
 
-10. Error: Takes previous destination insted of new Destination
-    Error Cause: no updation of simulator.
-    Solution: reseted the simulator and created new simulator for different new destination
+## 📜 License
 
+This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
 
-Fully Automatic SMS send feature (used Native Module work only for android)
-(Created on 28 FEB 2025, Source: https://www.npmjs.com/package/react-native-mobile-sms , https://reactnative.dev/docs/legacy/native-modules-intro)
-    For sending fully automatic SMS we have to make 2 files and changes in MainApplication.kt file:
-    File Location : android/app/src/main/java/com/routing
+---
 
-    1. SmsModule.java: (it holds the logic to send an SMS automatically from Android.)
-        Purpose: This file contains the actual implementation of the functionality (sending an SMS).
-        How It Works:
-            -> It uses Android’s native SmsManager API to send an SMS.
-            -> It exposes one or more methods (e.g., sendSMS) to JavaScript by using the @ReactMethod annotation.
-            -> This module is a subclass of ReactContextBaseJavaModule and provides a name (e.g., "SmsModule") that JavaScript code can use to reference it via NativeModules.
-
-    2. SmsPackage.java: (it wraps SmsModule so that React Native knows about it and can link it to JavaScript code.)
-        Purpose: This file serves as a bridge between your custom native module and React Native’s module system.
-        How It Works:
-            -> It implements the ReactPackage interface.
-            -> Inside its createNativeModules() method, it instantiates your SmsModule and adds it to a list of native modules.
-            -> By registering this package (usually in your MainApplication.kt), React Native will include your custom module as part of the app’s available native modules.
-
-
-(Created on 2 MAR 2025, Source: https://www.npmjs.com/package/@react-native-async-storage/async-storage, https://github.com/react-native-async-storage/async-storage)
-Created Setting Button on Home Screen:
-    1. Stored Phone Number using Async Storage (Download Command: npm i @react-native-async-storage/async-storage)
+*Developed by Neel Goswami*
