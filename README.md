@@ -28,14 +28,14 @@ A smart road safety application built using **React Native** and **Google Maps**
 
 ### 1. Initialize Project
 
-\`\`\`bash
+```
 npx react-native init MyMapApp
 cd MyMapApp
-\`\`\`
+```
 
 ### 2. Install Dependencies
 
-\`\`\`bash
+```
 # Core mapping & location
 npm install react-native-maps
 npm install react-native-maps-directions
@@ -58,16 +58,16 @@ npm install react-native-reanimated
 
 # Async Storage
 npm install @react-native-async-storage/async-storage
-\`\`\`
+```
 
 ### 3. Platform-Specific Configuration
 
 #### Android
 
 1. **Permissions & API Key**  
-   Edit \`android/app/src/main/AndroidManifest.xml\`:
+   Edit `android/app/src/main/AndroidManifest.xml`:
 
-   \`\`\`xml
+   ```
    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
    <uses-permission android:name="android.permission.SEND_SMS" />
@@ -78,47 +78,47 @@ npm install @react-native-async-storage/async-storage
        android:name="com.google.android.geo.API_KEY"
        android:value="YOUR_GOOGLE_MAPS_API_KEY" />
    </application>
-   \`\`\`
+   ```
 
 2. **Native Module for Automatic SMS**  
-   - **SmsModule.java**: implements SMS via \`SmsManager\`  
+   - **SmsModule.java**: implements SMS via `SmsManager`  
    - **SmsPackage.java**: registers the module  
-   - Register your package in \`MainApplication.kt\`  
+   - Register your package in `MainApplication.kt`  
 
 #### iOS
 
-\`\`\`bash
+```bash
 cd ios
 pod install
 cd ..
-\`\`\`
+```
 
-Add to \`Info.plist\`:
+Add to `Info.plist`:
 
-\`\`\`xml
+```
 <key>NSLocationWhenInUseUsageDescription</key>
 <string>Your app requires access to your location.</string>
 <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 <string>Your app requires access to your location.</string>
-\`\`\`
+```
 
 ---
 
 ## 🔧 Common Issues & Fixes
 
-1. **\`crypto.getRandomValues()\` Error**  
-   \`\`\`js
+1. **`crypto.getRandomValues()` Error**  
+   ```js
    // At top of your entry file (e.g., App.js)
    import 'react-native-get-random-values';
-   \`\`\`
+   ```
 
 2. **CMake Build Error**  
-   \`\`\`bash
+   ```bash
    cd android
    ./gradlew clean
    rm -rf app/.cxx app/build
    ./gradlew assembleDebug
-   \`\`\`
+   ```
 
 3. **Infinite SOS Loop**  
    - Stop simulation when SOS popup appears to prevent repeated checks.
@@ -133,7 +133,7 @@ Add to \`Info.plist\`:
 
 ## 📂 Project Structure
 
-\`\`\`
+```
 MyMapApp/
 ├── android/
 ├── ios/
@@ -146,7 +146,7 @@ MyMapApp/
 │   └── utils/
 ├── App.js
 └── README.md
-\`\`\`
+```
 
 ---
 
@@ -169,8 +169,8 @@ Feel free to open issues or submit pull requests.
 
 ## 📜 License
 
-This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the **MIT License**.
 
 ---
 
-*Developed by Neel Goswami*
+*Developed by Navraj Devali and Neeraj Koshyari*
